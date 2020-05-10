@@ -37,13 +37,13 @@ def update_flight_phase():
         else:
             return 2
     elif flight_phase == 2:
-        if altitude() > 75 + LAUNCH_ALTITUDE:
+        if altitude() > 100 + LAUNCH_ALTITUDE:
             return 2
         else:
             control.gear = True
             return 3
     elif flight_phase == 3:
-        if altitude() > 25 + LAUNCH_ALTITUDE:
+        if altitude() > 50 + LAUNCH_ALTITUDE:
             return 3
         else:
             return 4
@@ -64,6 +64,7 @@ def determine_throttle(throttle):
     print('\tdetermine_throttle: throttle={0}, altitude={1}, true_air_speed={2}, flying_upwards={3}'
           .format(round(throttle, 1), round(altitude(), 1), round(true_air_speed(), 1), flying_upwards()))
     max_throttle = 0.3
+    fine_max_throttle = max_throttle / 1.5
     adjustment = 0.05
     small_adjustment = adjustment / 2
     fine_adjustment = adjustment / 8
@@ -82,20 +83,20 @@ def determine_throttle(throttle):
         else:
             return throttle - adjustment
     elif flight_phase == 3:
-        if throttle > max_throttle / 1.5:
-            return max_throttle / 1.5 - small_adjustment
+        if throttle > fine_max_throttle:
+            return fine_max_throttle - small_adjustment
         elif true_air_speed() > 3.75 and not flying_upwards():
             new_throttle = throttle + small_adjustment
-            return new_throttle if new_throttle <= max_throttle / 1.5 else throttle
+            return new_throttle if new_throttle <= fine_max_throttle else throttle
         else:
             return throttle - small_adjustment
     elif flight_phase == 4:
         if altitude() <= LAUNCH_ALTITUDE:
             return 0
-        elif throttle > max_throttle / 2:
-            return max_throttle / 2 - fine_adjustment
+        elif throttle > fine_max_throttle:
+            return fine_max_throttle - fine_adjustment
         elif true_air_speed() > 1 and not flying_upwards():
-            return throttle + fine_adjustment if throttle + fine_adjustment <= max_throttle / 2 else throttle
+            return throttle + fine_adjustment if throttle + fine_adjustment <= fine_max_throttle else throttle
         else:
             return throttle - fine_adjustment
     else:
