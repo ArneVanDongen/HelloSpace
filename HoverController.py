@@ -71,26 +71,31 @@ def determine_throttle(throttle):
         if true_air_speed() > 15:
             return throttle - adjustment
         else:
-            return throttle + adjustment if throttle <= max_throttle else throttle
+            new_throttle = throttle + adjustment
+            return new_throttle if new_throttle <= max_throttle else throttle
     elif flight_phase == 1:
-        return 0
+        return 0.1
     elif flight_phase == 2:
         if true_air_speed() > 7.5 and not flying_upwards():
-            return throttle + adjustment if throttle <= max_throttle else throttle
+            new_throttle = throttle + small_adjustment
+            return new_throttle if new_throttle <= max_throttle else throttle
         else:
             return throttle - adjustment
     elif flight_phase == 3:
         if throttle > max_throttle / 1.5:
-            return max_throttle / 1.5
+            return max_throttle / 1.5 - small_adjustment
         elif true_air_speed() > 3.75 and not flying_upwards():
-            return throttle + small_adjustment if throttle <= max_throttle / 1.5 else throttle
+            new_throttle = throttle + small_adjustment
+            return new_throttle if new_throttle <= max_throttle / 1.5 else throttle
         else:
             return throttle - small_adjustment
     elif flight_phase == 4:
         if altitude() <= LAUNCH_ALTITUDE:
             return 0
+        elif throttle > max_throttle / 2:
+            return max_throttle / 2 - fine_adjustment
         elif true_air_speed() > 1 and not flying_upwards():
-            return throttle + fine_adjustment if throttle <= max_throttle / 2 else throttle
+            return throttle + fine_adjustment if throttle + fine_adjustment <= max_throttle / 2 else throttle
         else:
             return throttle - fine_adjustment
     else:
@@ -103,7 +108,7 @@ def flying_upwards():
     :rtype: bool
     :return: Whether or not not the vessel is flying upwards
     """
-    return prograde()[0] >= 0
+    return prograde()[0] >= -0.05
 
 
 # kRPC vars
@@ -124,7 +129,8 @@ LAUNCH_ALTITUDE = 80
 TARGET_ALTITUDE = 250 + LAUNCH_ALTITUDE
 
 print('\nSTARTING HOVER CONTROLLER')
-print(datetime.utcnow())
+start_time = datetime.utcnow()
+print(start_time)
 control.activate_next_stage()
 control.throttle = 0.2
 
@@ -140,3 +146,10 @@ while flight_phase < 5:
 
     log_vessel_status()
     time.sleep(1)
+
+
+print('\n===========================================\n')
+print('ENDING HOVER CONTROLLER')
+end_time = datetime.utcnow()
+print(end_time)
+print('Elapsed Mission Time: {0}'.format(end_time - start_time))
