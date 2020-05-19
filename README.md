@@ -5,3 +5,6 @@
  - [ ] Write own SAS module
  - [ ] calculate throttle for ascent also
  - [x] Instead of changing throttle reactively, calculate how much thrust is needed and apply it (19-05-2020)
+
+## Contributors
+* Hydraulixxd
