@@ -8,7 +8,7 @@
 
 ## TODO
 
- - [ ] Calculate when to last start suicide burn instead of taking altitude
+ - [x] Calculate when to last start suicide burn instead of taking altitude
  - [ ] Write own SAS module
  - [ ] calculate throttle for ascent also
  - [ ] add air resistance to throttle calculator
