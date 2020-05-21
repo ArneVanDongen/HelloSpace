@@ -18,7 +18,7 @@ class ThrottleCalculator:
         :return: a value from 0 to 1.00 denoting what the throttle should be set to
         """
         current_force = (current_mass * current_accel * current_accel_direction) + drag
-        desired_accel = speed_diff / time_to_impact  # I want to get to that speed in 1 s
+        desired_accel = speed_diff / time_to_impact
         accel_force = current_mass * desired_accel
         needed_force = accel_force + current_force
         print("\t\t/calculate_needed_thrust: current_mass={:.2f}, speed_diff={:.2f}, time_to_impact={:.2f}, drag={:.2f}"
@@ -50,5 +50,5 @@ class ThrottleCalculator:
         print("\t\t needed_force = {:.2f}= (inertial_force={:.2f} + current_force={:.2f} - drag={:.2f})"
               .format(needed_force, inertial_force, current_force, drag))
         print("\t\t\\should start suicide burn? {:.0f} <= {:.0f} = {}"
-              .format(self.max_thrust, needed_force, self.max_thrust <= needed_force * 1.005))
-        return self.max_thrust <= needed_force * 1.005
+              .format(self.max_thrust, needed_force, self.max_thrust <= needed_force))
+        return self.max_thrust <= needed_force

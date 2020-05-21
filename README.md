@@ -9,6 +9,7 @@
 * 500m hop, separate both stages, and recover both: 21-05-2020
 
 ## TODO
+- [ ] Fix the suicide burn timing issue (strobe firing)
 - [ ] Move to debug logging
 - [ ] Write own SAS module
 - [ ] calculate throttle for ascent also
