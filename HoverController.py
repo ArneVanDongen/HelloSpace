@@ -65,8 +65,10 @@ def determine_throttle(throttle):
             return new_throttle if new_throttle <= max_throttle else throttle
     else:
         if altitude() <= 75 + LAUNCH_ALTITUDE and not flying_upwards():
+            time_to_impact = (altitude() - LAUNCH_ALTITUDE) / true_air_speed()
             return throttle_calculator.calculate_needed_thrust(
-             vessel.mass, true_air_speed(), (altitude() - LAUNCH_ALTITUDE) / true_air_speed(), 9.81, 1 if flying_upwards() else -1) # connection.space_center.target_body.surface_gravity()
+             vessel.mass, true_air_speed(), time_to_impact, 9.81, 1 if flying_upwards() else -1)
+            # connection.space_center.target_body.surface_gravity()
         else:
             return 0
 
