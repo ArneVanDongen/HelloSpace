@@ -56,27 +56,28 @@ def determine_throttle(throttle):
     print('\tdetermine_throttle: throttle={0}, altitude={1}, true_air_speed={2}, flying_upwards={3}'
           .format(round(throttle, 1), round(altitude(), 1), round(true_air_speed(), 1), flying_upwards()))
     max_throttle = 0.3
-    adjustment = 0.001
+    adjustment = 0.025
     if flight_phase == 0:
-        if true_air_speed() > 15:
+        if true_air_speed() > TARGET_SPEED:
             return throttle - adjustment
         else:
             new_throttle = throttle + adjustment
             return new_throttle if new_throttle <= max_throttle else throttle
     else:
-        burn = throttle_calculator.check_if_should_start_suicide_burn(vessel.mass, 9.81, true_air_speed(),
+        burn = throttle_calculator.check_if_should_start_suicide_burn(vessel.mass, 9.81, flight.drag[0], true_air_speed(),
                                                                       calculate_time_to_impact())
         if burn:
             direction = 1 if flying_upwards() else -1
             return throttle_calculator.calculate_needed_throttle(vessel.mass, true_air_speed(),
-                                                                 calculate_time_to_impact(), 9.81, direction)
+                                                                 calculate_time_to_impact(), flight.drag[0], 9.81,
+                                                                 direction)
             # connection.space_center.target_body.surface_gravity()
         else:
             return 0
 
 
 def calculate_time_to_impact():
-    return altitude() / true_air_speed()
+    return (altitude() - center_of_mass_height) / true_air_speed()
 
 
 def calculate_suicide_burn_time(gravitational_accel, current_speed):
@@ -101,6 +102,7 @@ connection = krpc.connect()
 vessel = connection.space_center.active_vessel
 flight = vessel.flight()
 control = vessel.control
+center_of_mass_height = 7.55
 
 # Telemetry streams
 altitude = connection.add_stream(getattr, vessel.flight(), 'surface_altitude')
@@ -110,16 +112,18 @@ prograde = connection.add_stream(getattr, vessel.flight(), 'prograde')
 
 # Program vars
 flight_phase = 0
-TARGET_ALTITUDE = 250
+TARGET_ALTITUDE = 500
+TARGET_SPEED = 25
 
 # region Start up sequence
 print('\nSTARTING HOVER CONTROLLER')
+print('Planning to hop to {}m, with a vertical speed of {} m/s'
+      .format(TARGET_ALTITUDE, TARGET_SPEED))
 start_time = datetime.utcnow()
 print(start_time)
 control.activate_next_stage()
 control.throttle = 0.25
 throttle_calculator = ThrottleCalculator(vessel.max_thrust)
-print('max_thrust = {:.2f}'.format(throttle_calculator.max_thrust))
 loop_seperator = '\n===========================================\n'
 # endregion
 
