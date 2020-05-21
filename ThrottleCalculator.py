@@ -6,8 +6,8 @@ class ThrottleCalculator:
         """
         self.max_thrust = max_thrust
 
-    def calculate_needed_thrust(self, current_mass, speed_diff, time_to_impact, current_accel=9.81,
-                                current_accel_direction=-1):
+    def calculate_needed_throttle(self, current_mass, speed_diff, time_to_impact, current_accel=9.81,
+                                  current_accel_direction=-1):
         """
         Calculates the throttle needed for the desired speed change
         :param current_mass:
@@ -27,3 +27,5 @@ class ThrottleCalculator:
               .format(current_force, accel_force, needed_force))
         print("\t\t return {:.2f}".format(needed_force / self.max_thrust))
         return needed_force / self.max_thrust
+
+

@@ -1,4 +1,3 @@
-
 import time
 from datetime import datetime
 
@@ -40,7 +39,8 @@ def update_flight_phase():
         else:
             return 2
     elif flight_phase == 2:
-        if altitude() > LAUNCH_ALTITUDE:
+        # TODO find center of mass height instead of magic number
+        if altitude() > 7.6:
             return 2
         else:
             return 3
@@ -64,10 +64,11 @@ def determine_throttle(throttle):
             new_throttle = throttle + adjustment
             return new_throttle if new_throttle <= max_throttle else throttle
     else:
-        if altitude() <= 75 + LAUNCH_ALTITUDE and not flying_upwards():
-            time_to_impact = (altitude() - LAUNCH_ALTITUDE) / true_air_speed()
-            return throttle_calculator.calculate_needed_thrust(
-             vessel.mass, true_air_speed(), time_to_impact, 9.81, 1 if flying_upwards() else -1)
+        if altitude() <= 75 and not flying_upwards():
+            time_to_impact = altitude() / true_air_speed()
+            direction = 1 if flying_upwards() else -1
+            return throttle_calculator.calculate_needed_throttle(vessel.mass, true_air_speed(), time_to_impact,
+                                                                 9.81, direction)
             # connection.space_center.target_body.surface_gravity()
         else:
             return 0
@@ -89,15 +90,14 @@ flight = vessel.flight()
 control = vessel.control
 
 # Telemetry streams
-altitude = connection.add_stream(getattr, vessel.flight(), 'mean_altitude')
+altitude = connection.add_stream(getattr, vessel.flight(), 'surface_altitude')
 g_force = connection.add_stream(getattr, vessel.flight(), 'g_force')
 true_air_speed = connection.add_stream(getattr, vessel.flight(), 'true_air_speed')
 prograde = connection.add_stream(getattr, vessel.flight(), 'prograde')
 
 # Program vars
 flight_phase = 0
-LAUNCH_ALTITUDE = 80.5
-TARGET_ALTITUDE = 250 + LAUNCH_ALTITUDE
+TARGET_ALTITUDE = 250
 
 print('\nSTARTING HOVER CONTROLLER')
 start_time = datetime.utcnow()
@@ -106,10 +106,11 @@ control.activate_next_stage()
 control.throttle = 0.25
 throttle_calculator = ThrottleCalculator(vessel.max_thrust)
 print('max_thrust = {:.2f}'.format(throttle_calculator.max_thrust))
+loop_seperator = '\n===========================================\n'
 
-# The main loop
+# region Main Controller Loop
 while flight_phase < 3:
-    print('\n===========================================\n')
+    print('%s' % loop_seperator)
     print('{0} - T={1}'.format(datetime.utcnow(), round(vessel.met, 1)))
 
     flight_phase = update_flight_phase()
@@ -119,9 +120,9 @@ while flight_phase < 3:
 
     log_vessel_status()
     time.sleep(1 if flight_phase < 2 else 0.05)
+# endregion
 
-
-print('\n===========================================\n')
+print(loop_seperator)
 print('ENDING HOVER CONTROLLER')
 end_time = datetime.utcnow()
 print(end_time)
