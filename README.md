@@ -8,12 +8,12 @@
 
 ## TODO
 
- - [ ] Add RCSs to vehicle to prevent tip over on landing, and stabilize horizontal movement
  - [ ] Take ground dynamic distance to ground instead of launch attitude
  - [ ] Calculate when to last start suicide burn instead of taking altitude
  - [ ] Write own SAS module
  - [ ] calculate throttle for ascent also
  - [ ] add air resistance to throttle calculator
+ - [x] Add RCSs to vehicle to prevent tip over on landing, and stabilize horizontal movement (21-05-2020)
  - [x] Instead of changing throttle reactively, calculate how much thrust is needed and apply it (19-05-2020)
 
 ## Contributors
