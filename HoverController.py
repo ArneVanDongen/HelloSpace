@@ -55,25 +55,26 @@ def determine_throttle(throttle):
     """
     print('\tdetermine_throttle: throttle={0}, altitude={1}, true_air_speed={2}, flying_upwards={3}'
           .format(round(throttle, 1), round(altitude(), 1), round(true_air_speed(), 1), flying_upwards()))
-    max_throttle = 0.3
-    adjustment = 0.01
+    direction = 1 if flying_upwards() else -1
     if flight_phase == 0:
-        if true_air_speed() > TARGET_SPEED:
-            return throttle - adjustment
-        else:
-            new_throttle = throttle + adjustment
-            return new_throttle if new_throttle <= max_throttle else throttle
+        speed_diff = TARGET_SPEED - true_air_speed()
+        return throttle_calculator.calculate_needed_throttle(vessel.mass, speed_diff,
+                                                             2, flight.drag[0], 9.81,
+                                                             direction)
     else:
         burn = throttle_calculator.should_start_suicide_burn(vessel.mass, 9.81, flight.drag[0], true_air_speed(),
                                                              calculate_time_to_impact())
         if burn:
-            direction = 1 if flying_upwards() else -1
             return throttle_calculator.calculate_needed_throttle(vessel.mass, true_air_speed(),
                                                                  calculate_time_to_impact(), flight.drag[0], 9.81,
                                                                  direction)
             # connection.space_center.target_body.surface_gravity()
         else:
             return 0
+
+
+def calculate_time_to_target_altitude():
+    return (TARGET_ALTITUDE - (altitude() - center_of_mass_height)) / true_air_speed()
 
 
 def calculate_time_to_impact():
