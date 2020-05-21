@@ -9,6 +9,7 @@
 ## TODO
 
  - [ ] Add RCSs to vehicle to prevent tip over on landing, and stabilize horizontal movement
+ - [ ] Take ground dynamic distance to ground instead of launch attitude
  - [ ] Calculate when to last start suicide burn instead of taking altitude
  - [ ] Write own SAS module
  - [ ] calculate throttle for ascent also
