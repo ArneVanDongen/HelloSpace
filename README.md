@@ -9,6 +9,7 @@
 ## TODO
 
  - [ ] Add RCSs to vehicle to prevent tip over on landing, and stabilize horizontal movement
+ - [ ] Calculate when to last start suicide burn instead of taking altitude
  - [ ] Write own SAS module
  - [ ] calculate throttle for ascent also
  - [ ] add air resistance to throttle calculator
