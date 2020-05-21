@@ -9,6 +9,7 @@
 * 500m hop, separate both stages, and recover both: 21-05-2020
 
 ## TODO
+- [ ] Move to debug logging
 - [ ] Write own SAS module
 - [ ] calculate throttle for ascent also
 - [x] add air resistance to throttle calculator

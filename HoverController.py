@@ -49,14 +49,14 @@ def update_flight_phase():
 def determine_throttle(throttle):
     """
     Determines based on true_air_speed and flight_phase what the throttle should be set to for the next second
-    :param throttle: The current amount of throttle from 0 to 1
+    :param float throttle: The current amount of throttle from 0 to 1
     :rtype: float
     :return: The new throttle value
     """
     print('\tdetermine_throttle: throttle={0}, altitude={1}, true_air_speed={2}, flying_upwards={3}'
           .format(round(throttle, 1), round(altitude(), 1), round(true_air_speed(), 1), flying_upwards()))
     max_throttle = 0.3
-    adjustment = 0.025
+    adjustment = 0.01
     if flight_phase == 0:
         if true_air_speed() > TARGET_SPEED:
             return throttle - adjustment
@@ -64,8 +64,8 @@ def determine_throttle(throttle):
             new_throttle = throttle + adjustment
             return new_throttle if new_throttle <= max_throttle else throttle
     else:
-        burn = throttle_calculator.check_if_should_start_suicide_burn(vessel.mass, 9.81, flight.drag[0], true_air_speed(),
-                                                                      calculate_time_to_impact())
+        burn = throttle_calculator.should_start_suicide_burn(vessel.mass, 9.81, flight.drag[0], true_air_speed(),
+                                                             calculate_time_to_impact())
         if burn:
             direction = 1 if flying_upwards() else -1
             return throttle_calculator.calculate_needed_throttle(vessel.mass, true_air_speed(),
@@ -102,7 +102,7 @@ connection = krpc.connect()
 vessel = connection.space_center.active_vessel
 flight = vessel.flight()
 control = vessel.control
-center_of_mass_height = 7.55
+center_of_mass_height = 7.6
 
 # Telemetry streams
 altitude = connection.add_stream(getattr, vessel.flight(), 'surface_altitude')
