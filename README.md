@@ -10,9 +10,10 @@
 
 ## TODO
 - [ ] Fix the suicide burn timing issue (strobe firing)
+- [ ] Bug in ascend speed
 - [ ] Move to debug logging
 - [ ] Write own SAS module
-- [ ] calculate throttle for ascent also
+- [x] calculate throttle for ascent also
 - [x] add air resistance to throttle calculator
 - [x] Calculate when to last start suicide burn instead of taking altitude
 - [x] Take ground dynamic distance to ground instead of launch attitude
