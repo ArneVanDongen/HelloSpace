@@ -9,6 +9,8 @@
 * 500m hop, separate both stages, and recover both: 21-05-2020
 
 ## TODO
+- [ ] Write a guidance module that follows an altitude over distance, plus inclination function
+- [ ] Firuge out how to control two vessels at the same time
 - [ ] Fix the suicide burn timing issue (strobe firing)
 - [ ] Bug in ascend speed
 - [ ] Move to debug logging
