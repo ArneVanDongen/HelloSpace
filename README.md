@@ -10,11 +10,13 @@
 
 ## TODO
 - [ ] Write a guidance module that follows an altitude over distance, plus inclination function
-- [ ] Firuge out how to control two vessels at the same time
+- [ ] Figure out how to control two vessels at the same time
 - [ ] Fix the suicide burn timing issue (strobe firing)
-- [ ] Bug in ascend speed
+- [ ] Calculate when to end hop burn in order to reach goal altitude instead of stopping after
 - [ ] Move to debug logging
 - [ ] Write own SAS module
+- [x] Bug in ascend speed
+- [x] Use CelestialBody object of Kerbin
 - [x] calculate throttle for ascent also
 - [x] add air resistance to throttle calculator
 - [x] Calculate when to last start suicide burn instead of taking altitude

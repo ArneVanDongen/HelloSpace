@@ -59,14 +59,14 @@ def determine_throttle(throttle):
     if flight_phase == 0:
         speed_diff = TARGET_SPEED - true_air_speed()
         return throttle_calculator.calculate_needed_throttle(vessel.mass, speed_diff,
-                                                             2, flight.drag[0], 9.81,
+                                                             2, flight.drag[0], kerbin.surface_gravity,
                                                              direction)
     else:
-        burn = throttle_calculator.should_start_suicide_burn(vessel.mass, 9.81, flight.drag[0], true_air_speed(),
+        burn = throttle_calculator.should_start_suicide_burn(vessel.mass, kerbin.surface_gravity, 0, true_air_speed(),
                                                              calculate_time_to_impact())
-        if burn:
+        if burn and not flying_upwards():
             return throttle_calculator.calculate_needed_throttle(vessel.mass, true_air_speed(),
-                                                                 calculate_time_to_impact(), flight.drag[0], 9.81,
+                                                                 calculate_time_to_impact(), 0, 9.81,
                                                                  direction)
             # connection.space_center.target_body.surface_gravity()
         else:
@@ -100,7 +100,10 @@ def flying_upwards():
 
 # kRPC vars
 connection = krpc.connect()
-vessel = connection.space_center.active_vessel
+space_center = connection.space_center
+vessel = space_center.active_vessel
+bodies = space_center.bodies
+kerbin = bodies['Kerbin']
 flight = vessel.flight()
 control = vessel.control
 center_of_mass_height = 7.6
@@ -123,14 +126,13 @@ print('Planning to hop to {}m, with a vertical speed of {} m/s'
 start_time = datetime.utcnow()
 print(start_time)
 control.activate_next_stage()
-control.throttle = 0.25
 throttle_calculator = ThrottleCalculator(vessel.max_thrust)
-loop_seperator = '\n===========================================\n'
+loop_separator = '\n===========================================\n'
 # endregion
 
 # region Main Controller Loop
 while flight_phase < 3:
-    print('%s' % loop_seperator)
+    print('%s' % loop_separator)
     print('{0} - T={1}'.format(datetime.utcnow(), round(vessel.met, 1)))
 
     flight_phase = update_flight_phase()
@@ -143,7 +145,7 @@ while flight_phase < 3:
 # endregion
 
 # region Shut down sequence
-print(loop_seperator)
+print(loop_separator)
 print('ENDING HOVER CONTROLLER')
 end_time = datetime.utcnow()
 print(end_time)
