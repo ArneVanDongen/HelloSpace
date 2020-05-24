@@ -98,6 +98,13 @@ def flying_upwards():
     return prograde()[0] >= -0.05
 
 
+def log_vessels():
+    print('\tVessels')
+    vessels = space_center.vessels
+    for a_vessel in vessels:
+        print('\t\tvessel:', a_vessel.name)
+
+
 # kRPC vars
 connection = krpc.connect()
 space_center = connection.space_center
