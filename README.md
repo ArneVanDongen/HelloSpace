@@ -10,11 +10,12 @@
 
 ## TODO
 - [ ] Write a guidance module that follows an altitude over distance, plus inclination function
-- [ ] Figure out how to control two vessels at the same time
 - [ ] Fix the suicide burn timing issue (strobe firing)
 - [ ] Calculate when to end hop burn in order to reach goal altitude instead of stopping after
 - [ ] Move to debug logging
 - [ ] Write own SAS module
+- [x] Figure out how to control two vessels at the same time
+    > space_center.active_vessel is writable. After staging, the newest vessel can be found at the last index of space_center.vessels not containing 'Debris'
 - [x] Bug in ascend speed
 - [x] Use CelestialBody object of Kerbin
 - [x] calculate throttle for ascent also
