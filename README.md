@@ -9,6 +9,7 @@
 * 500m hop, separate both stages, and recover both: 21-05-2020
 
 ## TODO
+- [ ] Figure out a trajectory function that is straight up, through the thickest part of the atmosphere, and levels out at 75km altitude over 150km horizontal distance traveled
 - [ ] Write a guidance module that follows an altitude over distance, plus inclination function
 - [ ] Fix the suicide burn timing issue (strobe firing)
 - [ ] Calculate when to end hop burn in order to reach goal altitude instead of stopping after
