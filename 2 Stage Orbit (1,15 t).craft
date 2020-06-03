@@ -205,7 +205,7 @@ PART
 		name = ModuleGimbal
 		isEnabled = True
 		gimbalLock = False
-		gimbalLimiter = 50
+		gimbalLimiter = 100
 		currentShowToggles = False
 		enableYaw = True
 		enablePitch = True
@@ -2671,7 +2671,6 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = 0,0,0
-	link = longAntenna_4289874006
 	link = probeStackSmall_4289875382
 	attN = top,probeStackSmall_4289875382_0|0.981725|0
 	attN = bottom,liquidEngine3_4289875518_0|-0.9125|0
@@ -2722,93 +2721,6 @@ PART
 		hideFlow = False
 		isVisible = True
 		flowMode = Both
-	}
-}
-PART
-{
-	part = longAntenna_4289874006
-	partName = Part
-	persistentId = 1180543720
-	pos = -0.479056537,25.5786533,-0.37765798
-	attPos = 0,0,0
-	attPos0 = -0.479056537,0.852401733,-0.37765798
-	rot = 0.353553414,-0.612372398,0.612372518,0.353553355
-	attRot = 0,0,0,1
-	attRot0 = 0.353553414,-0.612372398,0.612372518,0.353553355
-	mir = 1,1,1
-	symMethod = Radial
-	autostrutMode = Off
-	rigidAttachment = False
-	istg = 3
-	resPri = 0
-	dstg = 2
-	sidx = -1
-	sqor = -1
-	sepI = 3
-	attm = 1
-	modCost = 0
-	modMass = 0
-	modSize = 0,0,0
-	srfN = srfAttach,fuelTank_4289875422
-	EVENTS
-	{
-	}
-	ACTIONS
-	{
-	}
-	PARTDATA
-	{
-	}
-	MODULE
-	{
-		name = ModuleDeployableAntenna
-		isEnabled = True
-		currentRotation = (-0.707106829, 0, 0, 0.707106829)
-		storedAnimationTime = 0
-		storedAnimationSpeed = 1
-		deployState = RETRACTED
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-			ExtendPanelsAction
-			{
-				actionGroup = None
-			}
-			ExtendAction
-			{
-				actionGroup = None
-			}
-			RetractAction
-			{
-				actionGroup = None
-			}
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleDataTransmitter
-		isEnabled = True
-		xmitIncomplete = False
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-			StartTransmissionAction
-			{
-				actionGroup = None
-			}
-		}
-		UPGRADESAPPLIED
-		{
-		}
 	}
 }
 PART
